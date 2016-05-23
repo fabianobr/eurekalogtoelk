@@ -1,2 +1,2 @@
 # eurekalogtoelk
-This tool transform eureka log data input and send it to elastic search (ELK stack).
+This tool makes eureka logs (data entry) and sends them to the elasticsearch (ELK stack).
