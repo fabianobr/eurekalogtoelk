@@ -52,7 +52,7 @@ def get_clean_params(params):
 
 def send_callbacks_info(eshost):
     esDB = Elasticsearch(eshost)
-    print(time.ctime(time.time()), 'send', len(LogEureka.callbacks.keys()), 'callbacks' )
+    print(time.ctime(time.time()), 'send', len(LogEureka.callbacks.keys()), 'callbacks to "hash_callback" index' )
     for item in LogEureka.callbacks.keys():
         key_values = dict()
         key_values['hashId'] = item
@@ -71,12 +71,9 @@ def test_elkhost(eshost):
 def get_field_list(filename):
     input_file = open(file=filename, mode='r')
     list = []
-    #print(filename)
-    #print(input_file)
     for line in input_file:
         line = line.replace("\n","").strip()
         list.append(line.strip())
-        #print(line)
     return list
 
 def fileToELK(filePath, filename, _countSent, callbacks, fromKeys, eshost):
@@ -91,7 +88,7 @@ def fileToELK(filePath, filename, _countSent, callbacks, fromKeys, eshost):
         esDB = Elasticsearch(eshost)
         esId = esDB.index(index=elk_indexname, doc_type="el-type", body=logobject)
         if esId['created']:
-            _countSent.append('.')
+            _countSent.append(elk_indexname)
             return True
         else:
             print(time.ctime(time.time()), filename, 'not created==>', esId)
@@ -107,7 +104,6 @@ def eurekalogtoelk(path, address, fields, callbacks):
 
     eshost = [address]
     readfields = fields
-    #readfields = (CST_EXCEPTION_DATE,'ActiveControls_ControlClass',"Exception_Message","Callbacks")
     useThreads = True
         
     print("Parameters:")
@@ -140,6 +136,12 @@ def eurekalogtoelk(path, address, fields, callbacks):
             t.join()
             sys.stdout.write('.')
         print("")
+
+    indexes = dict()
+    for log in _countsentlogs:
+        indexes[log] = 1
+
+    print(time.ctime(time.time()), "index(es) created: ", indexes.keys() )
     print(time.ctime(time.time()), "logs sent:", len(_countsentlogs))
 
     send_callbacks_info(eshost)
