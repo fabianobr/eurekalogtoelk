@@ -16,7 +16,6 @@ class LogEureka(dict):
 
     def generateLog(self, countCallbacks = 0, fromKeys = ()):
         self._extractBasicData(fromKeys)
-        #print(fromKeys)
         if (len(fromKeys)==0) or (CST_CALLBACKS in fromKeys):
             self._extractcallstack(countCallbacks)
         self.openedFile.close()        
@@ -24,7 +23,6 @@ class LogEureka(dict):
 
     def __init__(self, openedFile, fileName):
         self.openedFile = openedFile
-        #self._data = dict()
         self.indexPeriod = ""
         self.fileName = fileName
 
@@ -50,7 +48,6 @@ class LogEureka(dict):
 
             if isNewGroup:
                 groupName = line[0:nSeparator].strip()+"_"
-                #groupName = groupName.replace(" ", "")
                 continue
 
             if isRealData and (not isExceptionMessage):
@@ -70,6 +67,8 @@ class LogEureka(dict):
                 continue
         
             if  'dado' in locals():
+                if (len(fromKeys)>0) and (not(chave in fromKeys)):
+                    continue
                 dado[1] = dado[1] + '\n' + line.strip()
                 if (fromKeys.count==0) or (dado[0] in fromKeys):
                     self[dado[0]] = dado[1]

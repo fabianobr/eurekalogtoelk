@@ -12,6 +12,9 @@
     <OutputPath>.</OutputPath>
     <Name>eurekalogtoelk</Name>
     <RootNamespace>eurekalogtoelk</RootNamespace>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments>-p "E:\Fabiano\Documents\Visual Studio 2015\Projects\PythonApplication2\PythonApplication2\logs" -a 10.0.0.20 -c2 -ffield_list.txt</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,6 +27,9 @@
   <ItemGroup>
     <Compile Include="eurekalogtoelk.py" />
     <Compile Include="logeureka.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="README.md" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
