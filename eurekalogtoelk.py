@@ -54,7 +54,7 @@ def get_clean_params(params):
         if opt == "-t":
             threads_enabled = True
 
-    return path, address, fields, callbacks
+    return path, address, fields, callbacks, threads_enabled
 
 def send_callbacks_info(eshost):
     esDB = Elasticsearch(eshost)
