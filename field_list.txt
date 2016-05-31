@@ -6,7 +6,7 @@ ActiveControls_ControlClass
 .Application_Name/Description
 .Application_Parameters
 .Application_StartDate
-.Application_UpTime
+Application_UpTime
 .Application_VersionNumber
 Callbacks
 .Computer_DisplayDPI
@@ -22,11 +22,11 @@ Callbacks
 .Computer_VideoCard
 .Computer_VirtualMachine
 .CustomInformation_Basededados
-.CustomInformation_IDServidordeAplica√ß√£o
-.CustomInformation_Lotacao
-.CustomInformation_ServidordeAplica√ß√£o
-.CustomInformation_Usu√°rio
-.CustomInformation_Vers√£odoSistema
+CustomInformation_IDServidordeAplicaÁ„o
+CustomInformation_Lotacao
+CustomInformation_ServidordeAplicaÁ„o
+CustomInformation_Usu·rio
+CustomInformation_Vers„odoSistema
 date
 .Exception_Address
 .Exception_Count
@@ -53,6 +53,6 @@ filename
 .OperatingSystem_Update
 .User_Company
 .User_Email
-.User_ID
+User_ID
 .User_Name
 .User_Privileges

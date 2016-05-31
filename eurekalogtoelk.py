@@ -17,6 +17,7 @@ def show_usage_instructions():
     info.append("       -a      Address with host (port is optional) for elasticsearch instalation. Example: 192.168.0.2 or 10.0.100.20:9210;")
     info.append("       -f      File in text format with fields list, one field by line (optional);")
     info.append("       -c      number of threads whose callbacks will be read, default = 1;")
+    info.append("       -t      Use threads, one per file (experimental);")
     info.append("       -h      This help information;")
     info.append("")
     info.append("Example:")
@@ -27,14 +28,17 @@ def show_usage_instructions():
     
 def get_clean_params(params):
     try:
-        opts, args = getopt.getopt(params,"hp:a:f:h:c:")
+        opts, args = getopt.getopt(params,"hp:a:f:h:c:t:")
     except getopt.GetoptError:
         show_usage_instructions()
         sys.exit(2)
+
     path = "."
     address = "127.0.0.1"
     fields = [CST_EXCEPTION_DATE]
     callbacks = 1
+    threads_enabled = False
+
     for opt, arg in opts:
         if opt == "-h":
             show_usage_instructions()
@@ -47,6 +51,8 @@ def get_clean_params(params):
             callbacks = int(arg)
         if opt == "-f":
             fields.extend(get_field_list(arg))
+        if opt == "-t":
+            threads_enabled = True
 
     return path, address, fields, callbacks
 
@@ -99,12 +105,12 @@ def fileToELK(filePath, filename, _countSent, callbacks, fromKeys, eshost):
         pass
         return False
 
-def eurekalogtoelk(path, address, fields, callbacks):
+def eurekalogtoelk(path, address, fields, callbacks, threads_enabled):
     _countsentlogs = []
 
     eshost = [address]
     readfields = fields
-    useThreads = True
+    useThreads = threads_enabled
         
     print("Parameters:")
     print("     path    :", path)
@@ -150,5 +156,5 @@ def eurekalogtoelk(path, address, fields, callbacks):
 
 if __name__ == "__main__":
     inputparams = sys.argv[1:]
-    path, address, fields, callbacks = get_clean_params(inputparams)
-    eurekalogtoelk(path, address, fields, callbacks)
+    path, address, fields, callbacks, threads_enabled = get_clean_params(inputparams)
+    eurekalogtoelk(path, address, fields, callbacks, threads_enabled)
