@@ -35,7 +35,7 @@ This project uses Elasticsearch python module, you must install this module befo
 
 	pip install elasticsearch
 
-### Remote intallation with WGET
+### Remote installation with WGET
 
 Use this commands to easily download the files:
 
@@ -45,7 +45,7 @@ Use this commands to easily download the files:
 
 ## TO-DO
 
-* This documentation with more technical details;
+* More technical details;
 
 * Kibana visualizations who shows the power of analytics informations;
 
