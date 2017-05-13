@@ -8,7 +8,7 @@ ActiveControls_ControlClass
 .Application_StartDate
 Application_UpTime
 .Application_VersionNumber
-Callbacks
+Callstacks
 .Computer_DisplayDPI
 .Computer_DisplayMode
 .Computer_FreeDisk

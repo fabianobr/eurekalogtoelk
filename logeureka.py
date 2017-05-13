@@ -2,9 +2,9 @@
 from datetime import datetime
 import hashlib
 
-CST_CALLBACKS                   = "Callbacks"
-CST_EXCEPTION_DATE              = 'Exception_Date'
-CST_GROUP_CALLBACK              = "Call Stack Information:\n"
+CST_CALLSTACKS                  = "Callstacks"
+CST_EXCEPTION_DATE              = "Exception_Date"
+CST_GROUP_CALLSTACK             = "Call Stack Information:\n"
 CST_GROUP_MODULEINFORMATION     = "Modules Information:\n"
 CST_NAME_2_7_ID                 = "2.7 ID            :"
 CST_NAME_2_6_MESSAGE            = "2.6 Message       :"
@@ -12,12 +12,12 @@ CST_NAME_2_6_MESSAGE            = "2.6 Message       :"
 class LogEureka(dict):
     """Generate a dict object based in an input EurekaLog file."""
 
-    callbacks = dict()
+    callstacks = dict()
 
-    def generateLog(self, countCallbacks = 0, fromKeys = ()):
+    def generateLog(self, countCallstacks = 0, fromKeys = ()):
         self._extractBasicData(fromKeys)
-        if (len(fromKeys)==0) or (CST_CALLBACKS in fromKeys):
-            self._extractcallstack(countCallbacks)
+        if (len(fromKeys)==0) or (CST_CALLSTACKS in fromKeys):
+            self._extractcallstack(countCallstacks)
         self.openedFile.close()        
         self.prepareDataForELK()
 
@@ -30,8 +30,9 @@ class LogEureka(dict):
         groupName = ""
         isExceptionMessage = False
         for line in self.openedFile:
-            isCallstack = line.find(CST_GROUP_CALLBACK)>-1
+            isCallstack = line.find(CST_GROUP_CALLSTACK)>-1
             if (isCallstack):
+                #print("callstack found")
                 break
 
             nSeparator = line.find(':')
@@ -87,7 +88,7 @@ class LogEureka(dict):
         md5obj = self._generateHash(string)
         return md5obj.hexdigest()
 
-    def _extractcallstack(self, countCallbacks = 0):
+    def _extractcallstack(self, countCallstacks = 0):
         self.openedFile.readline()
         self.openedFile.readline()
         self.openedFile.readline()
@@ -95,9 +96,9 @@ class LogEureka(dict):
         nSeparators = 0
         cb = ""
         nCount = 0
-        arrCallbacks = []
+        arrCallstacks = []
         for line in self.openedFile:
-            if (nCount >= countCallbacks):
+            if (nCount >= countCallstacks):
                 break
 
             isModuleInformation = line.find(CST_GROUP_MODULEINFORMATION)>-1
@@ -116,8 +117,8 @@ class LogEureka(dict):
 
             if nSeparators>1:
                 hashCb = self._generateHashHex(cb)
-                arrCallbacks.append(hashCb)
-                self._newCallback(hashCb, cb)
+                arrCallstacks.append(hashCb)
+                self._newCallstack(hashCb, cb)
 
                 cb = ""
                 nSeparators = 0
@@ -127,16 +128,13 @@ class LogEureka(dict):
             if not isSeparator:
                 cb = cb + line
         
-        self['Callback'] = arrCallbacks
+        self['Callstack'] = arrCallstacks
 
-    def _newCallback(self, newHash, newCallback):
-        LogEureka.callbacks[newHash] = newCallback
+    def _newCallstack(self, newHash, newCallstack):
+        LogEureka.callstacks[newHash] = newCallstack
 
     def ready(self):
         return (len(self) > 2) and ('date' in self.keys())
-
-    #def getData(self):
-    #    return self._data
 
     def prepareDataForELK(self):
         if CST_EXCEPTION_DATE in self.keys():

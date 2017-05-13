@@ -235,3 +235,5 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 /eurekalogtoelk.pyproj
+/eurekalogtoelk.sln
+/__pycache__
